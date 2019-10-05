@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!--<property name="connection.driver_class">net.sf.log4jdbc.DriverSpy</property> &lt;!&ndash; DB Driver &ndash;&gt;-->
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL82Dialect</property> <!-- DB Dialect -->
+        <property name="hbm2ddl.auto">update</property> <!-- create / create-drop / update -->
+        <property name="hibernate.jdbc.batch_size"> 20 </property>
+        <!--<property name="show_sql">true</property> &lt;!&ndash; Show SQL in console &ndash;&gt;-->
+        <!--<property name="format_sql">true</property> &lt;!&ndash; Show SQL formatted &ndash;&gt;-->
+        <property name="jdbc.lob.non_contextual_creation">true</property>
+        <!-- Hikari specific properties -->
+        <property name="connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
+        <property name="hikari.dataSource.cachePrepStmts">true</property>
+        <property name="hikari.dataSource.prepStmtCacheSize">250</property>
+        <property name="hikari.dataSource.prepStmtCacheSqlLimit">2048</property>
+        <property name="hikari.dataSource.useServerPrepStmts">true</property>
+        <property name="hikari.maximumPoolSize">10</property>
+        <!--Hibernate entity-->
+        <mapping class="by.du4.study.hibernate.beans.Post"/>
+        <mapping class="by.du4.study.hibernate.beans.PostDetails"/>
+
+    </session-factory>
+</hibernate-configuration>
+
