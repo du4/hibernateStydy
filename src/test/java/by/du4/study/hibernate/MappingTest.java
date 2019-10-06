@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MappingTest {
 
     private static StandardServiceRegistry standardServiceRegistry;
@@ -45,7 +46,7 @@ public class MappingTest {
             dbSettings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL82Dialect");
             dbSettings.put(Environment.SHOW_SQL, "true");
             dbSettings.put(Environment.FORMAT_SQL, "true");
-            dbSettings.put(Environment.HBM2DDL_AUTO, "create");
+            dbSettings.put(Environment.HBM2DDL_AUTO, "update");
             dbSettings.put(Environment.USE_SQL_COMMENTS, "true");
 
             // Apply database settings
@@ -70,8 +71,9 @@ public class MappingTest {
     }
 
 
+
     @Test()
-    public void aSaveTest() {
+    public void testA_Save() {
         PostDetails postDetails = new PostDetails("du5");
         Post post = new Post("title", postDetails);
         Transaction transaction = session.beginTransaction();
@@ -82,11 +84,12 @@ public class MappingTest {
 
 
     @Test
-    public void bGetTest() {
+    public void testB_Get() {
         Post postFromDB = session.get(Post.class, 1l);
-
         LOG.info(postFromDB.toString());
     }
+
+
 
 
     @After

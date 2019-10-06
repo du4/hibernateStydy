@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -18,12 +17,7 @@ public class Post {
 
     public Post(String title, PostDetails details) {
         this.title = title;
-        if (details == null) {
-            if (this.details != null) {
-                this.details.setPost(null);
-            }
-        }
-        else {
+        if (details != null) {
             details.setPost(this);
         }
         this.details = details;

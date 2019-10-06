@@ -69,8 +69,7 @@ public class PostDetails {
         return "PostDetails{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
-                ", createdBy='" + createdBy + '\'' +
-                ", post=" + post +
+                ", createdBy='" + createdBy +
                 '}';
     }
 }
