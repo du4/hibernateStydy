@@ -1,6 +1,7 @@
 package by.du4.study.hibernate;
 
 import by.du4.study.hibernate.beans.Post;
+import by.du4.study.hibernate.beans.PostComment;
 import by.du4.study.hibernate.beans.PostDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,10 +30,11 @@ public class MappingTest {
     private static Session session;
     private static final Logger LOG = LoggerFactory.getLogger(MappingTest.class);
 
-    private static final String sql = "select version()";
 
-    @Before
-    public void init(){
+
+//    @Before
+    static {
+        System.out.println("!!!!!!!!!!!!!! Init test");
         try {
             // Creating StandardServiceRegistryBuilder
             StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
@@ -46,7 +48,7 @@ public class MappingTest {
             dbSettings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL82Dialect");
             dbSettings.put(Environment.SHOW_SQL, "true");
             dbSettings.put(Environment.FORMAT_SQL, "true");
-            dbSettings.put(Environment.HBM2DDL_AUTO, "update");
+            dbSettings.put(Environment.HBM2DDL_AUTO, "create");
             dbSettings.put(Environment.USE_SQL_COMMENTS, "true");
 
             // Apply database settings
@@ -55,6 +57,7 @@ public class MappingTest {
             standardServiceRegistry = registryBuilder.build();
             // Creating MetadataSources
             MetadataSources sources = new MetadataSources(standardServiceRegistry);
+            sources.addAnnotatedClass(PostComment.class);
             sources.addAnnotatedClass(Post.class);
             sources.addAnnotatedClass(PostDetails.class);
             // Creating Metadata
@@ -74,8 +77,12 @@ public class MappingTest {
 
     @Test()
     public void testA_Save() {
+        System.out.println("!!!!!!!!!!!!!! Save test");
         PostDetails postDetails = new PostDetails("du5");
         Post post = new Post("title", postDetails);
+        post.addComment (new PostComment("My first review") );
+        post.addComment( new PostComment("My second review") );
+        post.addComment( new PostComment("My third comment"));
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(post);
         session.flush();
@@ -85,6 +92,7 @@ public class MappingTest {
 
     @Test
     public void testB_Get() {
+        System.out.println("!!!!!!!!!!!!!!  Get test");
         Post postFromDB = session.get(Post.class, 1l);
         LOG.info(postFromDB.toString());
     }
@@ -92,9 +100,10 @@ public class MappingTest {
 
 
 
-    @After
-    public void finalizeTest(){
-        if (session.isOpen()) session.close();
-        sessionFactory.close();
-    }
+//    @After
+//    public void finalizeTest(){
+//        System.out.println("!!!!!!!!!!!!!!  After test");
+//        if (session.isOpen()) session.close();
+//        sessionFactory.close();
+//    }
 }

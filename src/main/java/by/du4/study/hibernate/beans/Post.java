@@ -1,12 +1,15 @@
 package by.du4.study.hibernate.beans;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Post")
 @Table(name = "post")
 public class Post {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -14,6 +17,13 @@ public class Post {
 
     @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private PostDetails details;
+
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<PostComment> comments = new ArrayList<>();
 
     public Post(String title, PostDetails details) {
         this.title = title;
@@ -49,6 +59,20 @@ public class Post {
     }
     public void setDetails(PostDetails details) {
         this.details = details;
+    }
+
+    public void addComment(PostComment comment) {
+        comments.add(comment);
+        comment.setPost(this);
+    }
+
+    public void removeComment(PostComment comment) {
+        comments.remove(comment);
+        comment.setPost(null);
+    }
+
+    public void setComments(List<PostComment> comments) {
+        this.comments = comments;
     }
 
     //endregion
